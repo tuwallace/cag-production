@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "cag": {
+      "command": ".venv/bin/python",
+      "args": ["-W", "ignore", "-m", "cag.mcp_server"],
+      "env": {"PYTHONPATH": "src"}
+    }
+  }
+}

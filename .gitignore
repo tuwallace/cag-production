@@ -1,0 +1,15 @@
+# environment and tooling
+.venv/
+.env
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+.DS_Store
+
+# generated at run time: eval reports, per-question outputs, logs, caches
+reports/*
+!reports/.gitkeep
+data/.embed_cache.json
+corpus/versions/
+*.log

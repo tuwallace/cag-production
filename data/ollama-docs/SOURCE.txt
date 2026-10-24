@@ -1,0 +1,4 @@
+Documentation slice used as the CAG corpus.
+Source: https://github.com/ollama/ollama/tree/main/docs (files: see this directory; upstream commit in COMMIT.txt)
+License: MIT, Copyright (c) Ollama (full text in LICENSE). The files are unmodified copies.
+Do not add extra *.md / *.mdx files to this directory: every such file becomes part of the corpus and changes its hash (eval/corpus.lock.json).

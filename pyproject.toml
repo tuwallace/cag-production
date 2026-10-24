@@ -1,0 +1,25 @@
+[project]
+name = "cag-production"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "ollama",
+  "fastmcp",
+  "rank-bm25",
+  "pandas",
+  "datasets",
+  "fastapi",
+  "uvicorn",
+  "python-dotenv",
+]
+
+[dependency-groups]
+dev = ["pytest", "httpx"]
+helpdesk = ["qdrant-client", "sentence-transformers", "opentelemetry-sdk", "opentelemetry-exporter-otlp-proto-http"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

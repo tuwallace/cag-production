@@ -1,0 +1,40 @@
+{"q": "What address and port does Ollama bind to by default?", "type": "single", "gold": ["faq#How can I expose"], "any": ["127.0.0.1"]}
+{"q": "Which environment variable changes the directory where Ollama stores models?", "type": "single", "gold": ["faq#Where are models stored"], "any": ["OLLAMA_MODELS"]}
+{"q": "In `ollama ps`, what does a PROCESSOR value of `100% CPU` mean?", "type": "single", "gold": ["faq#How can I tell if my model"], "any": ["system memory"]}
+{"q": "How do I keep a model loaded in memory indefinitely when calling the API?", "type": "single", "gold": ["faq#How do I keep a model loaded"], "any": ["keep_alive"]}
+{"q": "What is the default value of OLLAMA_MAX_QUEUE?", "type": "single", "gold": ["faq#How does Ollama handle concurrent"], "any": ["512"]}
+{"q": "How much memory does the q8_0 K/V cache type use compared with f16?", "type": "single", "gold": ["faq#How can I set the quantization"], "any": ["half", "50%"]}
+{"q": "Which command prints the Modelfile of an existing model?", "type": "single", "gold": ["modelfile#Examples"], "any": ["ollama show --modelfile"]}
+{"q": "What is the default temperature parameter in a Modelfile?", "type": "single", "gold": ["modelfile#Instructions"], "any": ["0.8"]}
+{"q": "How do I disable Vulkan GPU support in Ollama?", "type": "single", "gold": ["gpu#Vulkan", "docker#Vulkan"], "any": ["OLLAMA_VULKAN=0", "GGML_VK_VISIBLE_DEVICES=-1"]}
+{"q": "Where is the Ollama server log on macOS?", "type": "single", "gold": ["troubleshooting#(intro)", "macos#Troubleshooting"], "any": ["server.log"]}
+{"q": "How do I install a specific older version of Ollama on Linux?", "type": "single", "gold": ["linux#Installing specific", "troubleshooting#Installing older"], "any": ["OLLAMA_VERSION"]}
+{"q": "What does CUDA_VISIBLE_DEVICES do?", "type": "single", "gold": ["gpu#Nvidia"], "any": ["subset", "limit"]}
+{"q": "Which variable lets browser extensions access the Ollama server?", "type": "single", "gold": ["faq#How can I allow additional web origins"], "any": ["OLLAMA_ORIGINS"]}
+{"q": "Does Ollama quantize a GGUF model when importing it?", "type": "single", "gold": ["import#Importing a GGUF"], "any": ["does not quantize", "not quantize", "llama-quantize"]}
+{"q": "What is the minimum Nvidia driver version for GPUs with compute capability 5.0 through 6.2?", "type": "single", "gold": ["gpu#Nvidia"], "any": ["570"]}
+{"q": "What docker flag gives the Ollama container access to all Nvidia GPUs?", "type": "single", "gold": ["docker#Nvidia GPU"], "any": ["--gpus=all", "gpus all"]}
+{"q": "What is the minimum macOS version Ollama requires?", "type": "single", "gold": ["macos#System Requirements"], "any": ["Sonoma", "14"]}
+{"q": "How do I sign in to Ollama from the command line?", "type": "single", "gold": ["cli#Sign in to Ollama", "faq#Where can I find my Ollama Public Key"], "any": ["ollama signin"]}
+{"q": "Ollama in Docker works on the GPU at first, then falls back to CPU with GPU discovery errors. What config change fixes it, and how do I read the container's logs?", "type": "multi", "gold": ["troubleshooting#Linux docker", "troubleshooting#(intro)"], "all": ["cgroupfs", "docker logs"]}
+{"q": "How do I set a 64000-token default context on the server and then verify the model is fully on the GPU?", "type": "multi", "gold": ["context-length#Setting", "faq#How can I tell if my model"], "all": ["OLLAMA_CONTEXT_LENGTH", "ollama ps"]}
+{"q": "On Linux under systemd, how do I set OLLAMA_HOST and apply the change?", "type": "multi", "gold": ["faq#How do I configure Ollama server", "linux#Customizing"], "all": ["systemctl edit", "daemon-reload"]}
+{"q": "On Windows, how do I store models on another drive, and does uninstalling Ollama delete them?", "type": "multi", "gold": ["windows#Filesystem Requirements", "windows#Uninstall"], "all": ["OLLAMA_MODELS", "not remove"]}
+{"q": "What do I need to add to my account and which commands do I run to share a custom model on ollama.com?", "type": "multi", "gold": ["import#Sharing", "faq#Where can I find my Ollama Public Key"], "all": ["public key", "ollama push"]}
+{"q": "How do I restrict Ollama to specific GPUs on NVIDIA versus AMD?", "type": "multi", "gold": ["gpu#Nvidia", "gpu#AMD Radeon"], "all": ["CUDA_VISIBLE_DEVICES", "ROCR_VISIBLE_DEVICES"]}
+{"q": "My AMD GPU is not detected on Linux and the log shows a discovery timeout. What is the cause and the remedy?", "type": "multi", "gold": ["troubleshooting#AMD GPU Discovery", "gpu#AMD Radeon"], "all": ["amdgpu-install", "reboot"]}
+{"q": "How can I run Ollama in local-only mode, and what features do I lose?", "type": "multi", "gold": ["faq#How do I disable Ollama's cloud", "cloud#Data handling"], "all": ["OLLAMA_NO_CLOUD", "web search"]}
+{"q": "On Windows 10 I see garbled control characters in the terminal and WSL2 downloads are slow. What fixes each?", "type": "multi", "gold": ["troubleshooting#Windows Terminal Errors", "faq#Why is networking slow"], "all": ["22H1", "Large Send Offload"]}
+{"q": "What context length does Ollama default to on a machine with 32 GiB of VRAM, and how do I override it?", "type": "multi", "gold": ["context-length#(intro)", "faq#How can I specify"], "any": ["32k", "32000", "32768"], "all": ["OLLAMA_CONTEXT_LENGTH"]}
+{"q": "What is Ollama's default context window size?", "type": "conflict", "gold": ["faq#How can I specify", "context-length#(intro)", "modelfile#Instructions"], "any": ["4096", "4k"]}
+{"q": "How do I fine-tune a model on my own dataset using Ollama?", "type": "unanswerable", "gold": []}
+{"q": "Does Ollama support Intel Gaudi accelerators?", "type": "unanswerable", "gold": []}
+{"q": "What is the price per million tokens for Ollama's cloud models?", "type": "unanswerable", "gold": []}
+{"q": "How do I configure mutual TLS authentication for clients connecting to the Ollama server?", "type": "unanswerable", "gold": []}
+{"q": "How do I enable Ollama's built-in speech-to-text?", "type": "unanswerable", "gold": []}
+{"q": "Which Helm chart does Ollama officially ship for Kubernetes?", "type": "unanswerable", "gold": []}
+{"q": "What is the default timeout when pulling a model from the registry?", "type": "unanswerable", "gold": []}
+{"q": "How do I back up my chat history from the Ollama desktop app?", "type": "unanswerable", "gold": []}
+{"q": "Can Ollama run on a Raspberry Pi 4, and how much RAM does it need?", "type": "unanswerable", "gold": []}
+{"q": "Which Nvidia GPUs have compute capability 10.0?", "type": "unanswerable", "gold": []}
+{"q": "What is the maximum image size accepted by multimodal models?", "type": "unanswerable", "gold": []}

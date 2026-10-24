@@ -1,0 +1,36 @@
+# CAG (Cache-Augmented Generation): Production Guide
+
+A sandbox for learning and deploying **CAG**, the retrieval-free alternative to RAG.
+Sibling project: `../helpdesk-rag` (use it as the RAG baseline for comparison).
+
+## Docs
+
+| # | Doc | Purpose |
+|---|-----|---------|
+| 01 | [Concepts: CAG vs RAG](docs/01-concepts-cag-vs-rag.md) | What CAG is, when to use it, when not to |
+| 02 | [Dataset selection](docs/02-dataset-selection.md) | Assessment of the proposed dataset and recommended alternatives |
+| 03 | [Technical stack](docs/03-technical-stack.md) | Two deployment paths: managed API vs self-hosted |
+| 04 | [Architecture](docs/04-architecture.md) | Components, request flow, cache lifecycle |
+| 05 | [Implementation steps](docs/05-implementation-steps.md) | Ordered, phase-by-phase build plan |
+| 06 | [Production best practices](docs/06-production-best-practices.md) | Cache hygiene, security, observability, cost, eval |
+| 07 | [Sources](docs/07-sources.md) | References and confidence notes |
+| 08 | [Prototype](docs/08-prototype.md) | Runnable local CAG vs RAG eval (Ollama, ollmcp, helpdesk-rag, SQuAD) |
+| 09 | [Docs-QA results](docs/09-docs-qa-results.md) | CAG vs RAG on the Ollama documentation, 40 golden questions |
+| 10 | [Command reference](docs/10-commands.md) | Every command used so far, with a one-line explanation |
+| 11 | [Roadmap status](docs/11-roadmap-status.md) | Where the project stands against the implementation plan |
+| 12 | [Security tests](docs/12-security-tests.md) | Prompt injection, output guards, hardening, PII redaction, outage recovery, load and soak tests |
+| 13 | [Phase 8: gate and shadow mode](docs/13-phase8-gate-and-shadow.md) | CI-style regression gate with thresholds from the held-out results, and a CAG vs RAG shadow comparison |
+
+## One-paragraph summary
+
+CAG loads the whole knowledge base into the model's context once and reuses the precomputed
+attention state (the KV cache) on every query, so there is no retriever, vector DB or chunking
+at query time. It wins when the corpus is **small enough to fit the context window, changes
+rarely, and is queried often**. Production CAG is mostly an exercise in *prompt-prefix
+discipline* and *cache lifecycle management*, not in new model code.
+
+## Repository notes
+
+- `data/ollama-docs/` holds unmodified copies of Ollama's documentation (MIT, see `data/ollama-docs/LICENSE`); it is the corpus the eval and the gate are locked to.
+- `eval/baselines/` holds the 32B baseline answers the gate thresholds were calibrated from. `reports/` is generated output and is not tracked.
+- CI entry points: `make gate-fast`, `make gate-baseline` (seconds, no model) and `make gate-model` (needs Ollama and the 32B model). See `docs/13-phase8-gate-and-shadow.md`.

@@ -1,0 +1,60 @@
+{
+  "profile": {
+    "system": "cag",
+    "model": "qwen2.5:32b-instruct-q4_K_M",
+    "prompt": "quote",
+    "window": 32768,
+    "ratio": 0.85,
+    "questions": "docs dev+new (90)"
+  },
+  "sources": [
+    "docs-qa-118c-20261022-123448.answers.jsonl",
+    "docs-qa-118c-20261022-175052.answers.jsonl"
+  ],
+  "rule": "min = Wilson 95% lower bound of the baseline floored to 0.05; max = upper bound ceiled to 0.05; cache_hit_ratio >= 0.95; p50 <= 3x baseline (warn)",
+  "metrics": {
+    "overall_correct": {
+      "baseline_k": 85,
+      "baseline_n": 90,
+      "baseline": 0.944,
+      "severity": "fail",
+      "min": 0.85
+    },
+    "unanswerable_refused": {
+      "baseline_k": 51,
+      "baseline_n": 51,
+      "baseline": 1.0,
+      "severity": "fail",
+      "min": 0.9
+    },
+    "answerable_correct": {
+      "baseline_k": 34,
+      "baseline_n": 39,
+      "baseline": 0.872,
+      "severity": "fail",
+      "min": 0.7
+    },
+    "false_refusal": {
+      "baseline_k": 4,
+      "baseline_n": 39,
+      "baseline": 0.103,
+      "severity": "fail",
+      "max": 0.25
+    },
+    "cache_hit_ratio": {
+      "baseline_k": 2329952,
+      "baseline_n": 2337139,
+      "baseline": 0.997,
+      "severity": "fail",
+      "min": 0.95
+    },
+    "p50_s": {
+      "baseline": 3.1,
+      "max": 9.3,
+      "severity": "warn"
+    }
+  },
+  "relative": {
+    "cag_minus_rag_min": -0.05
+  }
+}

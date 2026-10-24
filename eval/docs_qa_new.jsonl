@@ -1,0 +1,50 @@
+{"q": "Which command unloads a running model from memory?", "type": "single", "gold": ["cli#Stop a running model", "faq#How do I keep a model loaded"], "any": ["ollama stop"]}
+{"q": "What does the REQUIRES instruction in a Modelfile specify?", "type": "single", "gold": ["modelfile#Instructions"], "any": ["minimum version"]}
+{"q": "Which variable caps how many models can be loaded at once, and what is its default?", "type": "single", "gold": ["faq#How does Ollama handle concurrent"], "any": ["3"], "all": ["OLLAMA_MAX_LOADED_MODELS"]}
+{"q": "Where is the Ollama public key stored on Linux?", "type": "single", "gold": ["faq#Where can I find my Ollama Public Key"], "any": ["/usr/share/ollama/.ollama/id_ed25519.pub"]}
+{"q": "How do I stop Ollama from launching at login on macOS?", "type": "single", "gold": ["faq#How can I stop Ollama"], "any": ["Login Items"]}
+{"q": "Which proxy variable should I use for model pulls and which one should I avoid?", "type": "single", "gold": ["faq#How do I use Ollama behind a proxy"], "all": ["HTTPS_PROXY", "HTTP_PROXY"]}
+{"q": "What docker command runs Ollama with AMD GPU support?", "type": "single", "gold": ["docker#AMD GPU"], "any": ["ollama/ollama:rocm", "rocm"]}
+{"q": "Which API does Ollama use for GPU acceleration on Apple devices?", "type": "single", "gold": ["gpu#Metal"], "any": ["Metal"]}
+{"q": "What are the minimum Windows version and NVIDIA driver version for Ollama on Windows?", "type": "multi", "gold": ["windows#System Requirements"], "all": ["22H2", "551.61"]}
+{"q": "How do I change the context length from the Ollama app and from the command line?", "type": "multi", "gold": ["context-length#Setting", "faq#How can I specify"], "all": ["slider", "OLLAMA_CONTEXT_LENGTH"]}
+{"q": "Does Ollama support Apple Neural Engine acceleration?", "type": "unanswerable", "gold": []}
+{"q": "How do I enable built-in rate limiting for the Ollama API?", "type": "unanswerable", "gold": []}
+{"q": "How many models can be pulled in parallel?", "type": "unanswerable", "gold": []}
+{"q": "How do I make Ollama write its logs as JSON?", "type": "unanswerable", "gold": []}
+{"q": "What is the default value of OLLAMA_GPU_OVERHEAD?", "type": "unanswerable", "gold": []}
+{"q": "How do I set a password on the Ollama API?", "type": "unanswerable", "gold": []}
+{"q": "How do I make the Ollama server itself terminate TLS?", "type": "unanswerable", "gold": []}
+{"q": "How do I limit the number of CPU threads Ollama uses?", "type": "unanswerable", "gold": []}
+{"q": "What is the default value of the num_gpu parameter?", "type": "unanswerable", "gold": []}
+{"q": "How do I opt out of Ollama telemetry?", "type": "unanswerable", "gold": []}
+{"q": "Where does Ollama keep its SQLite database?", "type": "unanswerable", "gold": []}
+{"q": "How do I restore a model I deleted by mistake?", "type": "unanswerable", "gold": []}
+{"q": "How do I install Ollama on FreeBSD?", "type": "unanswerable", "gold": []}
+{"q": "Is there an official Homebrew formula for Ollama?", "type": "unanswerable", "gold": []}
+{"q": "How do I route Ollama model pulls through a SOCKS5 proxy?", "type": "unanswerable", "gold": []}
+{"q": "How do I expose Prometheus metrics from Ollama?", "type": "unanswerable", "gold": []}
+{"q": "Which tokenizer does llama3.2 use?", "type": "unanswerable", "gold": []}
+{"q": "How do I enable gRPC in Ollama?", "type": "unanswerable", "gold": []}
+{"q": "How do I deploy Ollama with Docker Compose?", "type": "unanswerable", "gold": []}
+{"q": "How do I run Ollama on Kubernetes?", "type": "unanswerable", "gold": []}
+{"q": "Does Ollama support structured JSON schema outputs?", "type": "unanswerable", "gold": []}
+{"q": "What embedding dimension does nomic-embed-text produce?", "type": "unanswerable", "gold": []}
+{"q": "How do I set how many layers are offloaded to the GPU?", "type": "unanswerable", "gold": []}
+{"q": "How do I back up my models to S3?", "type": "unanswerable", "gold": []}
+{"q": "Does the Windows installer support a silent install flag?", "type": "unanswerable", "gold": []}
+{"q": "How do I verify the checksum of a downloaded model?", "type": "unanswerable", "gold": []}
+{"q": "What is the maximum number of GPUs Ollama can use at once?", "type": "unanswerable", "gold": []}
+{"q": "How do I enable gzip compression for API responses?", "type": "unanswerable", "gold": []}
+{"q": "How do I configure a custom model registry mirror?", "type": "unanswerable", "gold": []}
+{"q": "How do I change where the macOS server log file is written?", "type": "unanswerable", "gold": []}
+{"q": "What GPUs does Ollama support on Intel Macs?", "type": "unanswerable", "gold": []}
+{"q": "How do I enable text-to-speech output?", "type": "unanswerable", "gold": []}
+{"q": "How do I use Ollama from a Jupyter notebook?", "type": "unanswerable", "gold": []}
+{"q": "What is the default value of the mirostat parameter?", "type": "unanswerable", "gold": []}
+{"q": "How do I set presence_penalty or frequency_penalty?", "type": "unanswerable", "gold": []}
+{"q": "How do I use Ollama with GitHub Copilot?", "type": "unanswerable", "gold": []}
+{"q": "Does Ollama support the ONNX model format?", "type": "unanswerable", "gold": []}
+{"q": "Which license does the Ollama software itself use?", "type": "unanswerable", "gold": []}
+{"q": "How do I make Ollama send a webhook when a model finishes loading?", "type": "unanswerable", "gold": []}
+{"q": "How do I provision Ollama with Terraform?", "type": "unanswerable", "gold": []}
