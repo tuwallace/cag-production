@@ -1,10 +1,14 @@
-# EXAMPLE ONLY: written for GitHub Actions but never run on a CI system (this project is not in a git repository yet).
+# EXAMPLE ONLY: written for GitHub Actions but never run on a CI system. It lives in ci/, not .github/workflows/, so nothing executes
+# until you copy it there on purpose.
+#
+# Before using it: pin every `uses:` to a full commit SHA (look the current SHAs up yourself; tags such as @v4 can move).
 name: cag-gate
 on:
   pull_request:
-  schedule: [{cron: "0 3 * * *"}]          # nightly model tier
+permissions:
+  contents: read                            # nothing here needs to write to the repository
 jobs:
-  fast:                                     # every pull request: seconds, no model, no GPU
+  fast:                                     # every pull request: seconds, no model, no GPU, GitHub-hosted runner
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -12,15 +16,18 @@ jobs:
       - run: uv sync --python 3.12
       - run: make gate-fast                 # fails if the corpus, questions or prompt changed without a re-run of the model tier
       - run: make gate-baseline             # the committed baseline answers must still pass the committed thresholds
-  model:                                    # nightly and before a release: needs Ollama + the 32B model on a self-hosted runner
-    if: github.event_name == 'schedule'
-    runs-on: [self-hosted, gpu-32gb]
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@v4
-      - run: uv sync --python 3.12
-      - run: OLLAMA_HOST=127.0.0.1:11435 OLLAMA_NUM_PARALLEL=1 OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve &
-      - run: make gate-model                # exit 1 = regression: unanswerable refusals, correctness, false refusals or cache hit ratio below the thresholds
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with: {name: gate-reports, path: reports/gate-*}
+
+# The model tier (`make gate-model`, 30-60 minutes, needs Ollama and the 32B model with a q8_0 KV cache) is deliberately NOT a job here.
+# It needs a GPU machine, and a self-hosted runner on a PUBLIC repository lets pull requests from forks run arbitrary code on that machine.
+# Run it by hand on your own hardware before a release, or, in a PRIVATE repository only, as a scheduled job (never `pull_request`) on a runner
+# that holds no other secrets:
+#
+#   model:
+#     if: github.event_name == 'schedule'      # add `schedule: [{cron: "0 3 * * *"}]` under `on:`
+#     runs-on: [self-hosted, gpu-32gb]
+#     timeout-minutes: 120
+#     steps:
+#       - uses: actions/checkout@v4
+#       - run: uv sync --python 3.12
+#       - run: OLLAMA_HOST=127.0.0.1:11435 OLLAMA_NUM_PARALLEL=1 OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve &
+#       - run: make gate-model                # exit 1 = regression

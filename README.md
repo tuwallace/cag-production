@@ -1,5 +1,8 @@
 # CAG (Cache-Augmented Generation): Production Guide
 
+> **Status: research prototype, not a production system.** Everything here was built and measured with local models (Ollama; Qwen 2.5 32B and Qwen 3 8B) on one Apple-silicon machine, against a 25k-token slice of Ollama's documentation and 90 hand-written questions by a single author (a second human review is still open). Results will not transfer unchanged to other models, corpora or hardware.
+> The service has hardening (API keys, rate limits, PII and URL guards, outage recovery) but has not been security-audited, has no TLS, and its limits are per process: **do not expose it to the internet as it is.** [docs/12](docs/12-security-tests.md) and [docs/13](docs/13-phase8-gate-and-shadow.md) list what was and was not tested. Security reports: see [SECURITY.md](SECURITY.md).
+
 A sandbox for learning and deploying **CAG**, the retrieval-free alternative to RAG.
 Sibling project: `../helpdesk-rag` (use it as the RAG baseline for comparison).
 
@@ -34,3 +37,7 @@ discipline* and *cache lifecycle management*, not in new model code.
 - `data/ollama-docs/` holds unmodified copies of Ollama's documentation (MIT, see `data/ollama-docs/LICENSE`); it is the corpus the eval and the gate are locked to.
 - `eval/baselines/` holds the 32B baseline answers the gate thresholds were calibrated from. `reports/` is generated output and is not tracked.
 - CI entry points: `make gate-fast`, `make gate-baseline` (seconds, no model) and `make gate-model` (needs Ollama and the 32B model). See `docs/13-phase8-gate-and-shadow.md`.
+
+## Trademarks and affiliation
+
+Ollama, Qwen, Llama, Claude, Anthropic, Hugging Face and other product names are trademarks of their respective owners. They are used here only to identify the software and models that were tested. This project is not affiliated with, endorsed by or sponsored by any of them. The documentation slice in `data/ollama-docs/` is copyright Ollama, used under its MIT licence (`data/ollama-docs/LICENSE`).

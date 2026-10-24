@@ -11,7 +11,7 @@ from cag.systems import CAG
 POSITIVE = {
     "EMAIL": ["jane.doe@example.org", "ops+alerts@mail.corp.example.co.uk", "A_B-C@sub.domain.io"],
     "PHONE": ["(415) 555-0132", "415-555-0132", "415.555.0132", "+1 415 555 0132", "+44 20 7946 0958".replace("20 7946 0958", "207-946-0958")],
-    "SSN": ["123-45-6789", "078-05-1120"],
+    "SSN": ["123-45-6789", "111-22-3333"],
     "CARD": ["4111 1111 1111 1111", "5500-0000-0000-0004", "378282246310005", "4012888888881881"],
     "SECRET": ["AKIAIOSFODNN7EXAMPLE", "ghp_" + "a" * 36, "xoxb-1234567890-abcdefghij", "sk-" + "A1b2C3d4" * 3,
                "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dBjftJeZ4CVPmB92K27uhbUJU1p1r",
