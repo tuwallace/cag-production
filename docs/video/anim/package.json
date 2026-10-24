@@ -1,0 +1,22 @@
+{
+  "name": "cag-video-clips",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Animated clips and terminal replays for the CAG video (see ../script.md). node_modules is a symlink to the helpdesk-rag video project's install; run npm install here instead if you remove the symlink.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "still": "remotion still src/index.ts --port=3100",
+    "render": "remotion render src/index.ts --port=3100",
+    "check": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.537",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.537"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

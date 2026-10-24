@@ -43,7 +43,7 @@ Everything else runs without it: the docs-QA evaluation (the main results), the 
 ## Repository notes
 
 - `data/ollama-docs/` holds unmodified copies of Ollama's documentation (MIT, see `data/ollama-docs/LICENSE`); it is the corpus the eval and the gate are locked to.
-- `eval/baselines/` holds the 32B baseline answers the gate thresholds were calibrated from. `reports/` is generated output and is not tracked.
+- `eval/baselines/` holds the 32B baseline answers the gate thresholds were calibrated from, and the 8B answers used for comparison. `reports/` is generated output and is not tracked.
 - CI entry points: `make gate-fast`, `make gate-baseline` (seconds, no model) and `make gate-model` (needs Ollama and the 32B model). See `docs/13-phase8-gate-and-shadow.md`.
 
 ## Trademarks and affiliation

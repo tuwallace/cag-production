@@ -28,6 +28,7 @@ Legend: DONE = built and run; PARTIAL = built, not fully exercised or missing a 
 | Semantic attribution (dense / hybrid / reranker) | DONE (replay) | Hybrid keeps top-1 at 0.83-0.90 on paraphrased answers vs BM25 falling to 0.76; no gain on real model answers; reranker worse (doc 09, follow-up 6). |
 | Semantic vs lexical groundedness gate | DONE (replay) | Dev favoured semantic (AUROC 0.87 vs 0.69) but held-out reversed it (0.66 vs 0.90 lexical). A lexical support gate lifts 8B CAG 0.28 -> 0.72 and RAG 0.84 -> 0.96; no gate helps 32B (doc 09, follow-ups 7-8). |
 | Held-out evaluation (50 new questions) | DONE | 8B CAG refuses only 4 of 40 unanswerable questions (dev said 27%); 32B CAG refuses 40/40 and scores 0.98 at 3.0 s median. Model size beat every gate. |
+| Companion video package (`docs/video/`) | PARTIAL | Script (12 segments, ~7.5 min), five terminal demo scripts that run, a checker that re-computes every number in the script, and a recording guide are done. Narration audio and the seven animated clips are not built. |
 | qwen2.5:32b comparison | DONE | Fixes abstention (11/11 refused) and widens CAG's latency edge, but attribution stays poor and the quote format is ignored. |
 | Output guard: URL allowlist | DONE | Caught the only successful exfil link with 0 false positives; now in the service (`CAG_URL_ALLOWLIST`). |
 | Interactive ollmcp session | TODO | Headless tool-use check passed; the terminal UI was not driven by hand. |

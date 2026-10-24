@@ -1,0 +1,31 @@
+Cache-augmented generation (CAG) loads a whole knowledge base into the model once and reuses the model's memory of it, instead of searching for every question.
+I tested it against RAG on a MacBook with local models (Ollama; Qwen 3 8B and Qwen 2.5 32B): what the cache costs, what surprised me, how it failed, and how I checked it.
+
+0:00 Hook
+0:27 What CAG is
+1:02 The test
+1:43 Does the cache work?
+2:14 Surprise 1: the cache got evicted
+2:37 The result
+3:15 Surprise 2: asking for quotes backfired
+3:53 Surprise 3: my own benchmark fooled me
+4:25 When Ollama dies
+4:55 Attacks and load
+5:35 The regression gate
+6:01 Takeaways
+
+CAVEATS
+One machine, one run per setting, 90 test questions about a 26k-token slice of Ollama's documentation. The questions were written by an AI coding assistant and were
+not reviewed by a human. Treat the numbers as a comparison of setups on the same questions, not as a benchmark.
+
+ABOUT THIS VIDEO
+- The narration is a synthetic (AI-generated) voice, made with Kokoro-82M.
+- The terminal segments are replays of real captured output, not live screen recordings, and say so on screen. The outage segment replays data from a real run.
+- Animations were built with Remotion.
+
+CREDITS
+Knowledge base: Ollama's documentation (MIT licence), github.com/ollama/ollama. Models: Qwen (Alibaba Cloud), run with Ollama; check their licences before reuse.
+Tools: Ollama, FastAPI, rank-bm25, Remotion, Kokoro.
+
+CODE AND NOTES
+Repository: <link when the repository is public>

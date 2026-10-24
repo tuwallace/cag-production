@@ -1,0 +1,18 @@
+
+  Questions the docs do NOT answer. The model was told to quote its evidence. What it quoted:
+
+  Q: How do I configure mutual TLS authentication for clients connecting to the Ollama server?
+     "Ollama does not support mutual TLS authentication out of the box."
+       cited section: cloud-00 (cloud: (intro))   sentence is in that section: NO
+     "To use Ollama with a proxy server, Ollama runs an HTTP server and can be exposed using
+      a proxy server such as Nginx."
+       cited section: faq-10 (faq: How can I use Ollama with a proxy server?)   sentence is in that section: NO
+
+  Q: What is the default timeout when pulling a model from the registry?
+     "The default timeout when pulling a model from the registry is 5 minutes."
+       cited section: cli-00 (cli: Run a model)   sentence is in that section: NO
+
+  Q: How do I enable Ollama's built-in speech-to-text?
+     "Ollama does not have a built-in speech-to-text feature."
+       cited section: cli-00 (cli: Run a model)   sentence is in that section: NO
+

@@ -1,0 +1,9 @@
+
+  Held-out questions: 50, of which 40 have NO answer in the docs (right answer: "not in the knowledge base")
+
+  model       method    answered right  refused the 40   median time
+  qwen3 8B    CAG                 28%          4 of 40         6.7 s
+  qwen3 8B    RAG                 84%         32 of 40         5.0 s
+  qwen2.5 32B CAG                 98%         40 of 40         3.0 s
+  qwen2.5 32B RAG                 96%         38 of 40        18.6 s
+

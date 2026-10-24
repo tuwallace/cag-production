@@ -22,3 +22,11 @@ Session_Logs.md
 vault/
 .gitattributes
 .claude/
+
+# companion video: large or regenerable build output
+docs/video/anim/node_modules
+docs/video/anim/out/
+docs/video/anim/public/narration/*.wav
+docs/video/upload/*.mp4
+docs/video/upload/*.png
+docs/video/narration/.venv/

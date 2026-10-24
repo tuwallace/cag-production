@@ -1,0 +1,486 @@
+1
+00:00:00,500 --> 00:00:03,050
+What if your AI never had to search?
+
+2
+00:00:03,600 --> 00:00:08,713
+Cache-augmented generation, CAG, loads a
+whole knowledge base into the model
+
+3
+00:00:08,713 --> 00:00:13,691
+once, keeps the model's memory of it, and
+answers every question without a
+
+4
+00:00:13,691 --> 00:00:14,700
+retrieval step.
+
+5
+00:00:15,050 --> 00:00:19,300
+I tested it against RAG on my own machine,
+with real numbers.
+
+6
+00:00:19,650 --> 00:00:21,075
+It works.
+
+7
+00:00:21,425 --> 00:00:24,425
+But what decided whether it works wasn't the
+trick.
+
+8
+00:00:24,775 --> 00:00:26,925
+It was the size of the model.
+
+9
+00:00:27,567 --> 00:00:31,617
+RAG looks up a few relevant passages for
+every question.
+
+10
+00:00:31,967 --> 00:00:34,042
+CAG skips the lookup.
+
+11
+00:00:34,392 --> 00:00:38,960
+You put the entire knowledge base into the
+prompt once, and the model
+
+12
+00:00:38,960 --> 00:00:42,667
+computes its internal memory of that text,
+the KV cache.
+
+13
+00:00:43,017 --> 00:00:48,168
+Every later question reuses that memory, so
+only the question itself has to
+
+14
+00:00:48,168 --> 00:00:48,717
+be read.
+
+15
+00:00:49,067 --> 00:00:54,083
+The catch: everything must fit in the
+model's context window, everyone gets
+
+16
+00:00:54,083 --> 00:00:57,092
+the same text, and the first request is
+slow.
+
+17
+00:00:57,442 --> 00:01:01,917
+It suits a small, stable knowledge base that
+people ask about a lot.
+
+18
+00:01:02,528 --> 00:01:04,603
+Everything here is local.
+
+19
+00:01:04,953 --> 00:01:10,281
+Ollama, a Qwen eight-billion model and a
+Qwen thirty-two-billion model, on
+
+20
+00:01:10,281 --> 00:01:12,153
+one MacBook, no cloud API.
+
+21
+00:01:12,503 --> 00:01:17,524
+The knowledge base is a slice of Ollama's
+own documentation: a hundred and
+
+22
+00:01:17,524 --> 00:01:21,053
+eighteen sections, about twenty-six thousand
+tokens.
+
+23
+00:01:21,403 --> 00:01:26,084
+I built this with an AI coding assistant,
+and it wrote the ninety test
+
+24
+00:01:26,084 --> 00:01:26,753
+questions.
+
+25
+00:01:27,103 --> 00:01:31,898
+Fifty-one of them ask about things the
+documentation never says, because the
+
+26
+00:01:31,898 --> 00:01:35,178
+right answer to those is: not in the
+knowledge base.
+
+27
+00:01:35,528 --> 00:01:39,053
+Forty questions for development, fifty held
+back.
+
+28
+00:01:39,403 --> 00:01:41,428
+No human reviewed them.
+
+29
+00:01:41,778 --> 00:01:43,603
+I'll come back to that.
+
+30
+00:01:44,230 --> 00:01:47,255
+First question: does the cache actually
+work?
+
+31
+00:01:47,805 --> 00:01:51,330
+Here is the eight-billion model on the
+documentation.
+
+32
+00:01:51,680 --> 00:01:56,198
+The first call has to read all twenty-six
+thousand tokens, which took me
+
+33
+00:01:56,198 --> 00:01:58,080
+between two and three minutes.
+
+34
+00:01:58,430 --> 00:02:02,533
+After that, reading the prompt takes a
+fraction of a second, because more
+
+35
+00:02:02,533 --> 00:02:05,455
+than ninety-nine percent of it comes from
+the cache.
+
+36
+00:02:05,805 --> 00:02:10,170
+With the thirty-two-billion model that first
+call takes eight and a half
+
+37
+00:02:10,170 --> 00:02:10,655
+minutes.
+
+38
+00:02:11,005 --> 00:02:14,480
+That cold start is the real price of CAG.
+
+39
+00:02:15,095 --> 00:02:16,895
+My first surprise.
+
+40
+00:02:17,245 --> 00:02:22,652
+The cache lives inside Ollama, and one
+Ollama server has exactly one slot
+
+41
+00:02:22,652 --> 00:02:23,170
+for it.
+
+42
+00:02:23,520 --> 00:02:28,213
+When I loaded a second model for chat, it
+pushed the cache out, and the next
+
+43
+00:02:28,213 --> 00:02:32,720
+question paid the full cold start again,
+sixty-five seconds in that test.
+
+44
+00:02:33,070 --> 00:02:37,120
+The fix was a dedicated Ollama server for
+the cached model.
+
+45
+00:02:37,746 --> 00:02:41,096
+Now the result, on the fifty held-out
+questions.
+
+46
+00:02:41,446 --> 00:02:45,796
+The eight-billion model with CAG got twenty-
+eight percent right.
+
+47
+00:02:46,146 --> 00:02:50,634
+It answered thirty-six of the forty
+questions the documentation can't
+
+48
+00:02:50,634 --> 00:02:54,471
+answer, inventing details instead of saying
+it didn't know.
+
+49
+00:02:54,821 --> 00:02:57,971
+RAG with the same small model got eighty-
+four.
+
+50
+00:02:58,321 --> 00:03:03,303
+The thirty-two-billion model with CAG got
+ninety-eight percent, refused all
+
+51
+00:03:03,303 --> 00:03:08,153
+forty unanswerable questions, and answered
+in three seconds, where RAG on
+
+52
+00:03:08,153 --> 00:03:10,146
+the same model takes nineteen.
+
+53
+00:03:10,496 --> 00:03:12,521
+Same trick, same data.
+
+54
+00:03:12,871 --> 00:03:15,621
+The difference was the size of the model.
+
+55
+00:03:16,248 --> 00:03:21,073
+I tried to make answers traceable by telling
+the model to quote its sources.
+
+56
+00:03:21,423 --> 00:03:25,473
+Citations went from five percent to sixty-
+five percent.
+
+57
+00:03:25,823 --> 00:03:29,148
+But the small model started inventing
+evidence.
+
+58
+00:03:29,498 --> 00:03:34,645
+Asked about mutual TLS, which the
+documentation never mentions, it wrote a
+
+59
+00:03:34,645 --> 00:03:39,723
+sentence that isn't in the documentation and
+pinned it on a real section.
+
+60
+00:03:40,073 --> 00:03:42,298
+So I stopped asking the model.
+
+61
+00:03:42,648 --> 00:03:47,137
+After it answers, I find the supporting
+section by matching the answer
+
+62
+00:03:47,137 --> 00:03:48,548
+against the documents.
+
+63
+00:03:48,898 --> 00:03:53,498
+That found the right section ninety-three to
+a hundred percent of the time.
+
+64
+00:03:54,110 --> 00:03:57,260
+The next surprise was about my own
+measurements.
+
+65
+00:03:57,610 --> 00:04:02,494
+On the first forty questions, a semantic
+similarity check looked like the
+
+66
+00:04:02,494 --> 00:04:04,835
+best way to catch invented answers.
+
+67
+00:04:05,185 --> 00:04:09,868
+Then I wrote fifty new questions, and it
+flipped: the simple word-overlap
+
+68
+00:04:09,868 --> 00:04:10,510
+check won.
+
+69
+00:04:10,860 --> 00:04:14,260
+Forty questions had been too few to choose a
+method.
+
+70
+00:04:14,610 --> 00:04:19,370
+The small model's refusal rate told the same
+story: twenty-seven percent on
+
+71
+00:04:19,370 --> 00:04:22,035
+the first set, ten percent on the new one.
+
+72
+00:04:22,385 --> 00:04:25,210
+Always keep questions you haven't tuned on.
+
+73
+00:04:25,828 --> 00:04:29,153
+A production service has to survive
+failures.
+
+74
+00:04:29,503 --> 00:04:32,653
+So I killed Ollama in the middle of a
+request.
+
+75
+00:04:33,003 --> 00:04:36,228
+The caller got an error in under a tenth of
+a second.
+
+76
+00:04:36,578 --> 00:04:40,749
+The health check stayed up, readiness
+switched to not ready, and when I
+
+77
+00:04:40,749 --> 00:04:45,155
+restarted Ollama the service re-read the
+whole knowledge base by itself and
+
+78
+00:04:45,155 --> 00:04:48,503
+recovered, in two and a half minutes for the
+small model.
+
+79
+00:04:48,853 --> 00:04:52,983
+For the big one, just re-reading takes eight
+and a half minutes, so you
+
+80
+00:04:52,983 --> 00:04:54,903
+would want a second copy running.
+
+81
+00:04:55,519 --> 00:04:57,244
+Then I attacked it.
+
+82
+00:04:57,594 --> 00:05:00,669
+I hid instructions inside the documents.
+
+83
+00:05:01,019 --> 00:05:05,600
+Neither model obeyed a command like ignore
+your rules, but the bigger one
+
+84
+00:05:05,600 --> 00:05:09,993
+followed a hidden instruction once and added
+a tracking link, and both
+
+85
+00:05:09,993 --> 00:05:13,194
+repeated a false fact I planted as if it
+were true.
+
+86
+00:05:13,544 --> 00:05:18,319
+No prompt fixes that: you have to control
+what goes into the knowledge base.
+
+87
+00:05:18,669 --> 00:05:24,143
+A test asking for planted emails, card
+numbers and keys got all five back,
+
+88
+00:05:24,143 --> 00:05:25,919
+until I added redaction.
+
+89
+00:05:26,269 --> 00:05:31,236
+And under load the service handles about
+five requests a minute however many
+
+90
+00:05:31,236 --> 00:05:35,419
+people ask, so now it turns the extras away
+in ten milliseconds.
+
+91
+00:05:36,048 --> 00:05:38,723
+Last, I wanted to catch regressions.
+
+92
+00:05:39,073 --> 00:05:44,326
+A gate re-runs the questions and fails if
+accuracy or abstention drops below
+
+93
+00:05:44,326 --> 00:05:47,298
+thresholds taken from the held-out results.
+
+94
+00:05:47,648 --> 00:05:52,348
+It also locks the knowledge base and the
+prompt: change one fact in the
+
+95
+00:05:52,348 --> 00:05:57,048
+documentation and the check fails until you
+re-run the full evaluation.
+
+96
+00:05:57,398 --> 00:06:01,523
+It runs in seconds, and a secret scanner
+checks every push.
+
+97
+00:06:02,134 --> 00:06:03,784
+Five things.
+
+98
+00:06:04,134 --> 00:06:09,509
+One: CAG fits a small, stable knowledge base
+that gets asked about a lot.
+
+99
+00:06:09,859 --> 00:06:13,809
+Two: the cache is the product, so budget for
+the cold start.
+
+100
+00:06:14,159 --> 00:06:17,884
+Three: model size mattered more than any
+trick I tried.
+
+101
+00:06:18,234 --> 00:06:22,634
+Four: measure what happens on questions the
+knowledge base can't answer.
+
+102
+00:06:22,984 --> 00:06:25,759
+Five: keep questions you didn't tune on.
+
+103
+00:06:26,109 --> 00:06:31,172
+Everything here is local and open, with the
+caveats stated: one machine,
+
+104
+00:06:31,172 --> 00:06:34,759
+ninety questions written by an AI, no human
+review.

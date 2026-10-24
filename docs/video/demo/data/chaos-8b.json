@@ -1,0 +1,92 @@
+{
+ "S1": {
+  "inflight_request": [
+   502,
+   3.08
+  ],
+  "seconds_from_kill_to_response": 0.08,
+  "while_down": [
+   {
+    "healthz": 200,
+    "readyz": 503,
+    "ask": [
+     503,
+     0.01
+    ]
+   },
+   {
+    "healthz": 200,
+    "readyz": 503,
+    "ask": [
+     503,
+     0.01
+    ]
+   },
+   {
+    "healthz": 200,
+    "readyz": 503,
+    "ask": [
+     503,
+     0.01
+    ]
+   },
+   {
+    "healthz": 200,
+    "readyz": 503,
+    "ask": [
+     503,
+     0.01
+    ]
+   },
+   {
+    "healthz": 200,
+    "readyz": 503,
+    "ask": [
+     503,
+     0.01
+    ]
+   },
+   {
+    "healthz": 200,
+    "readyz": 503,
+    "ask": [
+     503,
+     0.01
+    ]
+   }
+  ],
+  "seconds_to_ready_after_restart": 146.8,
+  "first_ask_after_recovery": {
+   "status": 200,
+   "cache_hit_ratio": 0.9978023672745499,
+   "s": 1.3417474580055568
+  }
+ },
+ "S2": {
+  "responses": {
+   "0": [
+    502,
+    3.31
+   ],
+   "1": [
+    502,
+    2.9
+   ],
+   "2": [
+    502,
+    2.5
+   ]
+  },
+  "seconds_from_kill_until_all_returned": 0.08,
+  "threads_before": 4,
+  "threads_after": 7,
+  "healthz": 200,
+  "seconds_to_ready_after_restart": 146.8
+ },
+ "S3": {
+  "seconds_until_readyz_flips": 3.1,
+  "healthz": 200,
+  "seconds_to_ready_after_restart": 146.8,
+  "threads_after": 4
+ }
+}

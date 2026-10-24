@@ -1,0 +1,47 @@
+
+  $ make gate-baseline        # 32B answers vs the thresholds
+    check                               observed  bound          n    result
+    overall_correct                        0.944  >= 0.85        90   ok
+    unanswerable_refused                     1.0  >= 0.9         51   ok
+    answerable_correct                     0.872  >= 0.7         39   ok
+    false_refusal                          0.103  <= 0.25        39   ok
+    cache_hit_ratio                        0.997  >= 0.95        2337139 ok
+    p50_s                                    3.1  <= 9.3         90   ok
+    GATE: passed (0 failing checks)
+    exit code 0
+
+  $ same check on the 8B model's answers
+    check                               observed  bound          n    result
+    overall_correct                        0.489  >= 0.85        90   FAIL
+    unanswerable_refused                   0.137  >= 0.9         51   FAIL
+    answerable_correct                     0.949  >= 0.7         39   ok
+    false_refusal                            0.0  <= 0.25        39   ok
+    cache_hit_ratio                        0.998  >= 0.95        2337859 ok
+    p50_s                                   6.87  <= 9.3         90   ok
+    GATE: FAILED (2 failing checks)
+    exit code 1
+
+  $ make gate-fast            # lock on the docs, questions and prompt
+    check                               observed  bound          n    result
+    lock:corpus_sha                         None  unchanged           ok
+    lock:n_docs                             None  unchanged           ok
+    lock:questions_sha                      None  unchanged           ok
+    lock:prompt_sha                         None  unchanged           ok
+    token budget                            None  <= 85% of 32768      ok
+    gold specs resolve                        90  all questions       ok
+    GATE: passed (0 failing checks)
+    exit code 0
+
+  (change ONE fact in the docs: port 11434 -> 11435)
+
+  $ make gate-fast
+    check                               observed  bound          n    result
+    lock:corpus_sha                         None  unchanged           FAIL
+    lock:n_docs                             None  unchanged           ok
+    lock:questions_sha                      None  unchanged           ok
+    lock:prompt_sha                         None  unchanged           ok
+    token budget                            None  <= 85% of 32768      ok
+    gold specs resolve                        90  all questions       ok
+    GATE: FAILED (1 failing check)
+    exit code 1
+

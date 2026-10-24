@@ -1,0 +1,11 @@
+
+  CAG on the Ollama docs: 118 sections, model qwen3:8b
+
+  call                               prompt tokens  from cache   read prompt     total
+  first call (cold: reads it all)           25,938           0       175.0 s  176.7 s
+  question 1                                25,943      25,889         0.4 s    4.3 s
+  question 2                                25,942      25,888         0.4 s    3.2 s
+  question 3                                25,945      25,891         0.4 s    9.5 s
+
+  after the first call: 99.8% of every prompt comes from the cache
+
