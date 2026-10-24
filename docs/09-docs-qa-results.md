@@ -417,11 +417,11 @@ PYTHONPATH=src uv run python scripts/replay_verify.py <new-run>.answers.jsonl --
 - Only 10 answerable held-out questions, so false-refusal rates are poorly measured (one question = 10 points among answerable ones). The unanswerable side is better measured (40).
 - I wrote the new unanswerable questions after seeing which kinds of questions fooled the 8B model, and they lean toward "feature does not exist" phrasings. 32B's 40/40 may partly reflect that style, and results on other question types are untested.
 - Refusal and correctness are keyword and phrase matches. One run per model; thresholds still come from only 8-10 fabricated dev answers (32B had none, so it borrowed the 8B thresholds).
-- Still one author, no second reviewer.
+- Still one author (the AI assistant that built the project). The independent human review was waived by the owner on 2026-10-24; see the review status in doc 11.
 
 ## What to do next
 
 1. Refit the gate on all 90 questions' answers, then test on a freshly written third set (ideally by a second author, with more answerable questions).
 2. Try a model-based relevance pass ("does this quote answer the question?") in place of the lexical overlap, and test it on questions not used for tuning.
-3. Have a second person review `eval/docs_qa.jsonl`, and grow the unanswerable set beyond 11.
+3. A second-person review of `eval/docs_qa.jsonl` was waived (doc 11 lists the known defects). If these numbers are ever relied on, do that review first and grow the answerable set.
 4. Wire the chosen gate into the service and log rejected answers; they are a signal of corpus gaps.

@@ -16,6 +16,14 @@ One local model (`qwen3:8b`), one instruction prompt, one citation format. **Onl
 | `helpdesk` | first `--max-docs` tickets from helpdesk-rag, built as its `ingest.py` does (public comments only) | `eval/golden.jsonl` ids intersected with the subset; questions left with no gold are dropped | `bm25` (no services) or **helpdesk-rag's hybrid + rerank** | citation hit/precision, retrieval hit@k |
 | `squad` | first K SQuAD-train articles, one doc per paragraph | paragraph holding the answer | BM25 | contains-answer, F1, citation hit |
 
+### Optional dependency: helpdesk-rag
+
+The `helpdesk` dataset adapter and `--baseline helpdesk-rag` use the sibling project [helpdesk-rag](https://github.com/tuwallace/helpdesk-rag) (MIT, a separate repository).
+It is **not included here**. To use that part: clone it next to this repository as `../helpdesk-rag`, follow its README to download the data and build its Qdrant index, and run
+`uv sync --python 3.12 --group helpdesk` here. Even `--baseline bm25` reads the ticket CSVs from `../helpdesk-rag/data/raw`.
+The ticket dataset it uses (`mindweave/help-desk-tickets`) is CC-BY-NC-4.0 (non-commercial) and is not redistributed in this repository.
+Everything else runs without it: the docs-QA evaluation (the main results), the SQuAD adapter, the unit tests, the regression gate and the service.
+
 ## Setup
 
 ```bash

@@ -1,10 +1,10 @@
 # CAG (Cache-Augmented Generation): Production Guide
 
-> **Status: research prototype, not a production system.** Everything here was built and measured with local models (Ollama; Qwen 2.5 32B and Qwen 3 8B) on one Apple-silicon machine, against a 25k-token slice of Ollama's documentation and 90 hand-written questions by a single author (a second human review is still open). Results will not transfer unchanged to other models, corpora or hardware.
+> **Status: research prototype, not a production system.** Everything here was built and measured with local models (Ollama; Qwen 2.5 32B and Qwen 3 8B) on one Apple-silicon machine, against a 25k-token slice of Ollama's documentation and 90 questions written by the AI assistant that built it, with no independent human review (the owner waived it; see [docs/11](docs/11-roadmap-status.md)). Results will not transfer unchanged to other models, corpora or hardware.
 > The service has hardening (API keys, rate limits, PII and URL guards, outage recovery) but has not been security-audited, has no TLS, and its limits are per process: **do not expose it to the internet as it is.** [docs/12](docs/12-security-tests.md) and [docs/13](docs/13-phase8-gate-and-shadow.md) list what was and was not tested. Security reports: see [SECURITY.md](SECURITY.md).
 
 A sandbox for learning and deploying **CAG**, the retrieval-free alternative to RAG.
-Sibling project: `../helpdesk-rag` (use it as the RAG baseline for comparison).
+Optional sibling project: [`../helpdesk-rag`](https://github.com/tuwallace/helpdesk-rag), used as a RAG baseline for the helpdesk dataset only (see "Optional dependency" below).
 
 ## Docs
 
@@ -31,6 +31,14 @@ attention state (the KV cache) on every query, so there is no retriever, vector 
 at query time. It wins when the corpus is **small enough to fit the context window, changes
 rarely, and is queried often**. Production CAG is mostly an exercise in *prompt-prefix
 discipline* and *cache lifecycle management*, not in new model code.
+
+## Optional dependency: helpdesk-rag
+
+The `helpdesk` dataset adapter and `--baseline helpdesk-rag` use the sibling project [helpdesk-rag](https://github.com/tuwallace/helpdesk-rag) (MIT, a separate repository).
+It is **not included here**. To use that part: clone it next to this repository as `../helpdesk-rag`, follow its README to download the data and build its Qdrant index, and run
+`uv sync --python 3.12 --group helpdesk` here. Even `--baseline bm25` reads the ticket CSVs from `../helpdesk-rag/data/raw`.
+The ticket dataset it uses (`mindweave/help-desk-tickets`) is CC-BY-NC-4.0 (non-commercial) and is not redistributed in this repository.
+Everything else runs without it: the docs-QA evaluation (the main results), the SQuAD adapter, the unit tests, the regression gate and the service.
 
 ## Repository notes
 

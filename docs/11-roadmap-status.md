@@ -7,7 +7,7 @@ Legend: DONE = built and run; PARTIAL = built, not fully exercised or missing a 
 |---|---|---|
 | 0. Qualify the use case | PARTIAL | `check_budget` rejects oversized corpora (it caught the 103k-token helpdesk set and the 38k-token 3-article SQuAD set). Token counts are a chars/4 estimate; the exact count comes from Ollama after the first call. No tokenizer-exact pre-check. |
 | 1. Data and corpus builder | DONE | Deterministic, order-independent corpus with doc ids and a content hash (`corpus.py`); three adapters (SQuAD, helpdesk, Ollama docs). Gap: `write_version` (immutable versioned corpus files + manifest) exists but no CLI uses it yet; `corpus/` is empty. |
-| 2. Golden evaluation set | DONE (needs review) | Docs-QA: 90 questions in two splits: 40 dev (18 single, 10 multi, 1 conflict, 11 unanswerable) and 50 held-out (10 answerable, 40 unanswerable, grep-verified absent). Helpdesk: reused golden set (17 usable on the subset). Metrics: correctness, refusal, citation hit, quote groundedness. Gap: single author, keyword scoring, no LLM judge, only 10 held-out answerable questions. |
+| 2. Golden evaluation set | DONE (human review waived) | Docs-QA: 90 questions in two splits: 40 dev (18 single, 10 multi, 1 conflict, 11 unanswerable) and 50 held-out (10 answerable, 40 unanswerable, grep-verified absent). Helpdesk: reused golden set (17 usable on the subset). Metrics: correctness, refusal, citation hit, quote groundedness. Human review waived by the owner on 2026-10-24 (see "Golden question set: review status" below). Gaps: written by the assistant, keyword scoring, only 10 held-out answerable questions. |
 | 3. Minimal working CAG | DONE | Cold prefill 66 s (15k tokens) vs warm 0.2-0.3 s; cache hit ratio 0.995-0.997; compared with BM25 and helpdesk-rag RAG on three datasets. Local Ollama instead of the Claude API, by choice. |
 | 4. Service | PARTIAL | FastAPI app with `/ask`, `/healthz`, `/readyz`, `/corpus`; returns system-side `sources` and `support`; runs live against the 32B model on the docs corpus (491 s warm-up, 0 errors in a load sweep). Warm-up now runs in a background thread, so liveness stays up and readiness returns 503 (found and fixed in phase 7). Hardened in phase 7: API keys, per-client rate limit, FIFO bounded queue with timeouts (503/429/504), URL guard on outputs, JSON request log; verified live on the 32B (overload sheds in ~10 ms, served latency bounded, goodput stays at capacity). Also: PII redaction, backend-outage recovery. Gaps: applies no groundedness gate, no conversation history, limits are per process (single replica), no TLS. |
 | 5. Cache operations | PARTIAL | Warm on startup (service and MCP server), readiness gate, dedicated Ollama instance to prevent eviction. New: the service detects a lost backend, reports not-ready, and re-prefills the corpus automatically when Ollama returns (147 s on 8B; ~8 min on 32B). TODO: scheduled keep-alive, blue/green corpus rollout with rollback, a second replica to cover cold starts. |
@@ -38,13 +38,31 @@ Legend: DONE = built and run; PARTIAL = built, not fully exercised or missing a 
 2. Pick a dataset that fits (doc 02) - done; the proposed game-replay set was rejected, three others were tried.
 3. Stack and architecture (docs 03, 04) - done.
 4. Build and measure a prototype (docs 05, 08) - done.
-5. Evaluate honestly against RAG (doc 09) - done once; repeat with a second reviewer and a larger model.
+5. Evaluate honestly against RAG (doc 09) - done once; repeat with a larger model (an independent review of the questions was waived).
 6. Harden for production (docs 06, phases 4-8 above) - mostly ahead of us.
+
+## Golden question set: review status (decision of 2026-10-24)
+
+The planned second human review of the 90 questions was **waived by the owner**. What exists instead, and what it means:
+
+| Check | Result |
+|---|---|
+| Authorship | Questions, gold chunks and keyword references were written by the AI assistant that built the project (Claude). No human has independently checked them. |
+| Mechanical review (`scripts/review_mechanical.py`) | Every `any` / `all` reference was found in its gold chunks except one; all gold specs resolve; no duplicate questions; 6 of the 51 unanswerable questions use only words that occur somewhere in the corpus (topic-adjacent). |
+| LLM review (`scripts/review_llm.py`, Llama 3.1 8B) | Not usable as a judge: it called 48 of the 51 unanswerable questions answerable (25 with invented evidence, 23 with a real sentence that does not answer the question) and agreed with the label on only 3. It did confirm that all 39 answerable questions can be answered from their gold chunks (its own answers matched the reference on 29). |
+| Review sheet (`scripts/make_review_sheet.py`) | Generates `reports/review-sheet.md` for anyone who wants to review later. |
+
+Known defects left in place. Changing a question changes the lock (`eval/corpus.lock.json`), which requires the 30-60 minute model tier and `ci_gate.py update-lock`, so they were not fixed:
+- the q8_0 K/V cache question accepts "half" or "50%", but the docs say "approximately 1/2", so a faithful quote of the docs would be scored wrong;
+- five references are very short and could match by accident ("3", "14", "0.8", "4k", "50%");
+- six unanswerable questions are topic-adjacent (for example the Apple Neural Engine and "maximum number of GPUs"), so a refusal there is debatable.
+
+Consequence: read every score as the assistant's own benchmark. It is useful for comparing configurations on the same questions, not as an independent measure of accuracy.
 
 ## Suggested next steps, in order
 
 1. Copy the fast job from `ci/workflow.example.yml` into `.github/workflows/` (pin the actions to full SHAs; `actions/checkout` is already pinned in the gitleaks workflow) and watch `make gate-fast` + `make gate-baseline` run on the private repo. Keep the model tier a manual, pre-release step on your own hardware.
-2. Review `eval/docs_qa.jsonl` and `eval/docs_qa_new.jsonl` with a second person and grow the answerable side (only 39 answerable questions bound the weakest check); then refit the gate.
+2. Grow the answerable side of the question set (only 39 answerable questions bound the weakest check) and fix the known reference defects below; then refit the gate. (The independent human review is waived.)
 3. Wire a canary: route a small share of real traffic to CAG, keep RAG as fallback, and use the shadow criteria plus an automatic rollback.
 4. Wire the winning gate policy into the service (the 32B passes without one; the 8B needs the lexical support gate), add `write_version` to a build CLI, and put shadow comparison behind a service flag.
 5. Longer 32B soak, a TLS proxy, and a second replica to cover the 8-minute cold start.

@@ -9,7 +9,7 @@ Every command used so far, grouped by task. Run from `cag-production/` unless a 
 |---|---|
 | `cp .env.example .env` | Create local settings (Ollama host, model, context size). No secrets are needed. |
 | `uv sync --python 3.12` | Create `.venv` and install dependencies (ollama, fastmcp, rank-bm25, fastapi, datasets...). |
-| `uv sync --python 3.12 --group helpdesk` | Also install what helpdesk-rag's retriever imports (qdrant-client, sentence-transformers, OpenTelemetry). Large download. |
+| `uv sync --python 3.12 --group helpdesk` | Also install what helpdesk-rag's retriever imports (qdrant-client, sentence-transformers, OpenTelemetry). Large download; only needed for `--baseline helpdesk-rag` (needs `../helpdesk-rag`, see the optional-dependency note in the README). A plain `uv sync` removes these packages again. |
 | `PYTHONPATH=src uv run pytest -q` | Run the 95 offline tests (fake LLM; no Ollama needed). |
 
 ## 2. Ollama

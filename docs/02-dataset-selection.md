@@ -2,17 +2,18 @@
 
 ## Proposed dataset: `wonderfulworlds/multiplayer-456guys-sample`
 
-Inspected 2026-10-21 from the public repo page:
+Proposed by the project owner. Publisher and terms as shown on its Hugging Face page when inspected on 2026-10-21: published by **Wonderful Worlds 5G Ltd**,
+license cc-by-4.0, **gated** (the files are visible only after logging in and accepting the publisher's conditions).
 
-- Files: `recordings/` (game replay files, e.g. "replay 2026-08-18T12-18_in-2_00699"), `.gitattributes`, and a 27-byte `README.md`.
-- License: cc-by-4.0. **Gated**: files require login and accepting conditions.
-- No dataset card, schema or text documents.
+What was visible without access:
+- Files: `recordings/` (a folder with a replay file, named like "replay 2026-08-18T12-18_in-2_00699"), `.gitattributes`, and a 27-byte `README.md`.
+- No dataset card, schema, description or text documents.
 
-**Verdict: not suitable for CAG.** It appears to be multiplayer game replay recordings (my reading of the folder
-name and commit message; the contents were not accessible). CAG needs a *text corpus that answers questions*.
-Replay logs are telemetry, not knowledge. Using them would force a custom
-event-to-text conversion and would not demonstrate CAG's strengths. If you can open the gated files and they turn
-out to contain readable text or JSON, revisit this.
+**Assessment: not a fit for this project's purpose, a text corpus for question answering.** This is a statement about fit, not about the quality or value of the
+dataset, and it rests on public metadata only: the folder name and a commit message suggest multiplayer game replay recordings, which is an inference because the
+gated files were not opened. CAG needs a *text corpus that answers questions*; replay logs are telemetry, not knowledge, and using them would force a custom
+event-to-text conversion that would not show what CAG is good at. If the files turn out to contain readable text or JSON, revisit this.
+This project is not affiliated with the publisher.
 
 ## Recommended datasets (in order)
 
