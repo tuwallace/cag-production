@@ -1,0 +1,12 @@
+# Gitleaks configuration (picked up automatically when scanning this repository).
+title = "cag-production"
+
+[extend]
+useDefault = true                       # keep all default rules
+
+# The only expected finding: the PII-redaction tests need a JWT-shaped string. It is the public sample token from jwt.io
+# (payload {"sub":"1234567890"}), not a credential. Narrow on purpose: one rule, one file.
+[[allowlists]]
+description = "published sample JWT used as a PII-redaction test fixture"
+targetRules = ["jwt"]
+paths = ['''tests/test_pii\.py''']

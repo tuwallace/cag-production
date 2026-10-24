@@ -1,0 +1,28 @@
+# Scans the full git history for committed secrets on every push to main, every pull request, and on demand.
+# Everything is pinned (action by commit SHA, scanner image by exact tag) so a floating "latest" cannot change what runs here.
+# To upgrade: bump the checkout SHA and the gitleaks tag together and re-run the workflow.
+name: gitleaks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0            # full history, not just the latest commit
+          persist-credentials: false
+      - name: Scan git history for secrets
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE":/repo \
+            -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0=/repo \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 git /repo --redact --no-banner -v

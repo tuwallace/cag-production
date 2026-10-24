@@ -13,3 +13,12 @@ reports/*
 data/.embed_cache.json
 corpus/versions/
 *.log
+
+# local "second brain" files (Graphify + Obsidian workflow): generated or personal, contain absolute paths; never committed
+graphify-out/
+.graphifyignore
+BRAINS.md
+Session_Logs.md
+vault/
+.gitattributes
+.claude/
