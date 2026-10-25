@@ -3,6 +3,8 @@
 > **Status: research prototype, not a production system.** Everything here was built and measured with local models (Ollama; Qwen 2.5 32B and Qwen 3 8B) on one Apple-silicon machine, against a 25k-token slice of Ollama's documentation and 90 questions written by the AI assistant that built it, with no independent human review (the owner waived it; see [docs/11](docs/11-roadmap-status.md)). Results will not transfer unchanged to other models, corpora or hardware.
 > The service has hardening (API keys, rate limits, PII and URL guards, outage recovery) but has not been security-audited, has no TLS, and its limits are per process: **do not expose it to the internet as it is.** [docs/12](docs/12-security-tests.md) and [docs/13](docs/13-phase8-gate-and-shadow.md) list what was and was not tested. Security reports: see [SECURITY.md](SECURITY.md).
 
+**Video walkthrough:** [I tested CAG against RAG on my laptop](https://youtu.be/1iEjZISdaeo) (about 6.5 minutes; synthetic narration; the plan and checks are in [docs/video](docs/video/README.md)).
+
 A sandbox for learning and deploying **CAG**, the retrieval-free alternative to RAG.
 Optional sibling project: [`../helpdesk-rag`](https://github.com/tuwallace/helpdesk-rag), used as a RAG baseline for the helpdesk dataset only (see "Optional dependency" below).
 
